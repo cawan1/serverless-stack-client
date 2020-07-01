@@ -1,4 +1,6 @@
 export default {
+    STRIPE_KEY: "pk_test_51GyNpDF8K8uNS43sqspvhQK4BwqwY6PPbh943I9hxb2tAAVKGvynnHHfnasYxoyyfolN6In1ceSrzGAJShJLmHER00023pnqxV",
+    MAX_ATTACHMENT_SIZE: 5000000,
     s3: {
       REGION: "us-east-1",
       BUCKET: "notes-app-uploads-cawan"
