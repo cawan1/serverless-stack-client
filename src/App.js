@@ -6,6 +6,7 @@ import Routes from "./Routes";
 import { LinkContainer } from "react-router-bootstrap";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 
 function App() {
@@ -15,24 +16,24 @@ function App() {
   useEffect(() => {
     onLoad();
   }, []);
-  
+
   async function onLoad() {
     try {
       await Auth.currentSession();
       userHasAuthenticated(true);
     }
-    catch(e) {
+    catch (e) {
       if (e !== 'No current user') {
         alert(e);
       }
     }
-  
+
     setIsAuthenticating(false);
   }
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
-    history.push("/login"); 
+    history.push("/login");
   }
   return (
     !isAuthenticating && (
@@ -54,23 +55,23 @@ function App() {
                   <NavItem onClick={handleLogout}>Logout</NavItem>
                 </>
               ) : (
-                <>
-                  <LinkContainer to="/signup">
-                    <NavItem>Signup</NavItem>
-                  </LinkContainer>
-                  <LinkContainer to="/login">
-                    <NavItem>Login</NavItem>
-                  </LinkContainer>
-                </>
-              )}
+                  <>
+                    <LinkContainer to="/signup">
+                      <NavItem>Signup</NavItem>
+                    </LinkContainer>
+                    <LinkContainer to="/login">
+                      <NavItem>Login</NavItem>
+                    </LinkContainer>
+                  </>
+                )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <AppContext.Provider
-          value={{ isAuthenticated, userHasAuthenticated }}
-        >
-          <Routes />
-        </AppContext.Provider>
+        <ErrorBoundary>
+          <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }}>
+            <Routes />
+          </AppContext.Provider>
+        </ErrorBoundary>
       </div>
     )
   );
